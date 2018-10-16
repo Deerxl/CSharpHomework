@@ -59,6 +59,7 @@ namespace project1
         {
             var setter = new SetAlarmClock();
             //注册事件
+            System.Threading.Thread.Sleep(1000);
             setter.Setting += ShowProgress;
             setter.DoSetting();
         }
