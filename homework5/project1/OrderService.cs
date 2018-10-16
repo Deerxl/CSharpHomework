@@ -126,6 +126,51 @@ namespace project1
             }
         }   //修改订单
 
+        public void SelectOrder()
+        {
+            Console.WriteLine("请输入要查找的订单号或姓名：");
+            try
+            {
+                String temp = Console.ReadLine();
+                var query1 = from mOrder in orders
+                             where temp == mOrder.ID || temp == mOrder.Name
+                             select mOrder;
+                if (query1.Count() == 0)
+                {
+                    Console.WriteLine("对不起，查找不到所需数据！");
+                    return;
+                }
+                else
+                {
+                    Console.WriteLine("请输入你想要筛选的价格区间：");
+                    double temp1 = Convert.ToDouble(Console.ReadLine());
+                    double temp2 = Convert.ToDouble(Console.ReadLine());
+                    foreach (Order n in query1)
+                    {
+                        Console.WriteLine("订单号：" + n.ID + "\t姓名：" + n.Name);
+                        var query2 = n.Items.Where(m => m.Price >= temp1 && m.Price <= temp2);
+                        if (query2.Count() == 0)
+                        {
+                            Console.WriteLine("没有在此范围内的订单！");
+                            return;
+                        }
+                        else
+                        {
+                            foreach (OrderDetails m in query2)
+                            {
+                                Console.WriteLine("\t商品：" + m.Item + "\t数量：" + m.Num + "\t价格：" + m.Price);
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                Console.WriteLine("请输入有效的数据！");
+            }
+
+        } //筛选订单
+
         public void ShowOrderDetails(Order temp)
         {
             Console.WriteLine("订单号：" + temp.ID  + "\t姓名：" + temp.Name);
@@ -157,7 +202,7 @@ namespace project1
             while(ifCircle)
             {
                 Console.WriteLine("菜单：");
-                Console.WriteLine("1.添加订单" + "\t2.删除订单" + "\t3.查询订单" + "\t4.修改订单" + "\t5.查看所有订单" + "\t6.退出");
+                Console.WriteLine("1.添加订单" + "\t2.删除订单" + "\t3.查询订单" + "\t4.修改订单" + "\t5.筛选订单" + "\t6.查看所有订单" + "\t7.其它任意键退出");
                 temp = Console.ReadLine();
                 switch (temp)
                 {
@@ -174,6 +219,9 @@ namespace project1
                         ReviseOrder();
                         break;
                     case "5":
+                        SelectOrder();
+                        break;
+                    case "6":
                         ShowOrders();
                         break;
                     default:
