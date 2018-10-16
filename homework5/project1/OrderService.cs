@@ -10,6 +10,82 @@ namespace project1
     {
         public static List<Order> orders = new List<Order>();
 
+        public void EnterOrder()
+        {
+                Console.WriteLine("请输入你想进入操作的订单号或姓名；");
+                String temp = Console.ReadLine();
+                var query1 = from mOrder in orders
+                             where temp == mOrder.ID || temp == mOrder.Name
+                             select mOrder;
+            if (query1.Count() == 0)
+            {
+                Console.WriteLine("没有此订单！");
+            }
+            else
+            {
+                try
+                {
+                    bool TEMP = true;
+                    while (TEMP)
+                    {
+                        Console.WriteLine("1.添加条目" + "\t2.删除条目" + "\t3.查找条目" + "\t4.其余键返回主菜单");
+                        switch (Console.ReadLine())
+                        {
+                            case "1":
+                                Console.WriteLine("请输入要添加的条目的商品名称、数量、价格");
+                                string Item = Console.ReadLine();
+                                int Number = Convert.ToInt32(Console.ReadLine());
+                                double Price = Convert.ToDouble(Console.ReadLine());
+                                OrderDetails M = new OrderDetails(Item, Number, Price);
+                                foreach (Order n in query1)
+                                {
+                                    n.Items.Add(M);
+                                    Console.WriteLine("添加成功！");
+                                    break;
+                                }
+                                break;
+                            case "2":
+                                Console.WriteLine("请输入要删除的商品：");
+                                string Temp = Console.ReadLine();
+                                foreach (Order n in query1)
+                                {
+                                    var query2 = n.Items.Where(m => m.Item == Temp);
+                                    foreach (OrderDetails m in query2)
+                                    {
+                                        n.Items.Remove(m);
+                                        Console.WriteLine("删除成功！");
+                                        break;
+                                    }
+                                }
+                                break;
+                            case "3":
+                                Console.WriteLine("请输入要筛选的订单的价位区间：");
+                                double Temp1 = Convert.ToDouble(Console.ReadLine());
+                                double Temp2 = Convert.ToDouble(Console.ReadLine());
+                                foreach (Order n in query1)
+                                {
+                                    Console.WriteLine("订单号：" + n.ID + "\t姓名：" + n.Name);
+                                    var query2 = n.Items.Where(m => m.Price >= Temp1 && m.Price <= Temp2);
+                                    foreach (OrderDetails m in query2)
+                                    {
+                                        Console.WriteLine("\t商品：" + m.Item + "\t数量：" + m.Num + "\t价格：" + m.Price);
+                                    }
+                                    Console.WriteLine();
+                                }
+                                break;
+                            default:
+                                TEMP = false;
+                                return;
+                        }
+                    }
+                }
+                catch
+                {
+                    Console.WriteLine("请输入有效的数据！");
+                }
+            }
+
+        }
         public void Add(Order temp)
         {
             orders.Add(temp);
@@ -48,9 +124,32 @@ namespace project1
             }
             
         }    //添加新订单
-        public void AddOrderDetails()
+        public void AddOrderDetails(Order N)
         {
-
+            Console.WriteLine("请输入订单物品详细信息：名称、数量、价格（输入-1结束）");
+            try
+            {
+                bool temp = true;
+                while (temp)
+                {
+                    string Item = Console.ReadLine();
+                    var str1 = Console.ReadLine();
+                    int Number = Convert.ToInt32(str1);
+                    var str2 = Console.ReadLine();
+                    double Price = Convert.ToDouble(str2);
+                    OrderDetails details = new OrderDetails(Item, Number, Price);
+                    N.Items.Add(details);
+                    Console.WriteLine("添加成功！");
+                    if ("-1" == Console.ReadLine())
+                    {
+                        temp = false;
+                    }
+                }
+            }
+            catch
+            {
+                Console.WriteLine("请输入正确的订单信息！");
+            }
         }
 
         public void RemoveOrder()
@@ -202,7 +301,7 @@ namespace project1
             while(ifCircle)
             {
                 Console.WriteLine("菜单：");
-                Console.WriteLine("1.添加订单" + "\t2.删除订单" + "\t3.查询订单" + "\t4.修改订单" + "\t5.筛选订单" + "\t6.查看所有订单" + "\t7.其它任意键退出");
+                Console.WriteLine("1.添加订单" + "\t2.删除订单" + "\t3.查询订单" + "\t4.修改订单" + "\t5.筛选订单" + "\t6.查看所有订单" +"\t7.进入订单" + "\t8.其它任意键退出");
                 temp = Console.ReadLine();
                 switch (temp)
                 {
@@ -224,11 +323,15 @@ namespace project1
                     case "6":
                         ShowOrders();
                         break;
+                    case "7":
+                        EnterOrder();
+                        break;
                     default:
                         ifCircle = false;
                         break;
                 }
             }
         }//菜单
+
     }
 }
