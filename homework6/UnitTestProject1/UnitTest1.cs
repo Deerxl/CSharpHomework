@@ -8,30 +8,43 @@ namespace UnitTestProject1
     [TestClass]
     public class UnitTest1
     {
-        string id = "20181022001";
-        string name = "Alu";
-        string item = "flower";
-        int num = 2;
-        double price = 99.9;
+        readonly string id1 = "20181024001";
+        readonly string name1 = "Alu";
+        readonly string id2 = "20181024002";
+        readonly string name2 = "junyi";
+        readonly string item = "flower";
+        readonly int num = 2;
+        readonly double price = 99.9;
 
         [TestMethod]
-        public void AddNewOrderTest()
+        public void AddNewOrder()
         {
-            Order temp = new Order(id, name);
-            OrderDetails orderDetails = new OrderDetails(item, num, price);
-           //List<OrderDetails> list = new List<OrderDetails>();
-            //temp.Items = list;
-            temp.Items.Add(orderDetails);
-            //Assert.AreEqual(OrderService.AddNewOrder(id, name),temp);
+            OrderService tempTest = new OrderService();
+            Order temp = tempTest.AddNewOrder(id1, name1);
+            Assert.IsNotNull(temp);
+        }
 
+        [TestMethod]
+        public void AddDetailsTest()
+        {
+            OrderService tempTest = new OrderService();
+            Order temp1 = tempTest.AddNewOrder(id2, name2);
+            tempTest.AddDetails(item, num, price, temp1);
+            Assert.IsNotNull(temp1.Items);
+        }
 
+        [TestMethod]
+        public void RemoveDetailsTest()
+        {
+            Order temp1 = new Order(id1, name1);
+            OrderDetails details = new OrderDetails(item, num, price);
+            List<OrderDetails> detailsList = new List<OrderDetails>();
+            temp1.Items = detailsList;
+            temp1.Items.Add(details);
 
-            //OrderService temp = new project1.OrderService();
-            // temp.Add(order);
-
-
-            // project1.OrderService.orders.Add();
-            //Assert.IsNull(OrderService.AddNewOrder());
+            OrderService tempTest = new OrderService();
+            tempTest.RemoveDetails(item, temp1);
+            Assert.IsFalse(temp1.Items.Exists(m => m.Item == item));
         }
     }
 }
