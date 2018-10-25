@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using System.Xml.Serialization;
 
@@ -17,6 +15,7 @@ namespace project1
             orders.Add(order);
             return order;
         }    //添加新订单
+
         public void AddDetails(string item, int number, double price, Order temp)
         {
             OrderDetails details = new OrderDetails(item, number, price);
