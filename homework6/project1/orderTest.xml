@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<ArrayOfOrder xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Order>
+    <Items />
+    <ID>20181024001</ID>
+    <Name>Alu</Name>
+  </Order>
+  <Order>
+    <Items>
+      <OrderDetails>
+        <Item>flower</Item>
+        <Num>2</Num>
+        <Price>99.9</Price>
+      </OrderDetails>
+    </Items>
+    <ID>20181024002</ID>
+    <Name>junyi</Name>
+  </Order>
+</ArrayOfOrder>

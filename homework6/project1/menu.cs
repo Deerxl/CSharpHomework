@@ -169,17 +169,35 @@ namespace project1
                                 Console.WriteLine("输入你要修改明细的订单号或名称：");
                                 string temp4b = Console.ReadLine();
                                 if (ifExist(temp4b) == false) break;
-                                Console.WriteLine("输入你要修改的条目的名称,以及要修改的明细类型（a.名称;b.数量;c.价格）：");
+                                Console.WriteLine("输入你要修改的条目的名称," +
+                                    "要修改的明细类型（a.名称;b.数量;c.价格）," +
+                                    "以及修改的数据改变后的值");
                                 string temp4b1 = Console.ReadLine();
                                 string temp4b2 = Console.ReadLine();
-                                if (temp4b2 == "a" || temp4b2 == "b" || temp4b2 == "c")
+                               
+                                if (temp4b2 == "a")
                                 {
-                                    Console.WriteLine("输入想要修改的数据改变后的值：");
                                     string temp4b3 = Console.ReadLine();
                                     foreach (Order n in Search(temp4b))
                                     {
-                                        ReviseDetails(temp4b3, temp4b2, temp4b1, n);
+                                        ReviseItem(temp4b3, temp4b1, n);
                                         break;
+                                    }
+                                }
+                                else if (temp4b2 == "b")
+                                {
+                                    int temp4b4 = Convert.ToInt32(Console.ReadLine());
+                                    foreach (Order n in Search(temp4b))
+                                    {
+                                        ReviseNumber(temp4b4, temp4b1, n);
+                                    }
+                                }
+                                else if (temp4b2 == "c")
+                                {
+                                    double temp4b4 = Convert.ToDouble(Console.ReadLine());
+                                    foreach(Order n in Search(temp4b))
+                                    {
+                                        RevisePrice(temp4b4, temp4b1, n);
                                     }
                                 }
                                 else
@@ -233,6 +251,10 @@ namespace project1
                 catch(ArgumentException)
                 {
                     Console.WriteLine("不允许输入空路径！");
+                }
+                catch(System.NotSupportedException)
+                {
+                    Console.WriteLine("路径格式错误！");
                 }
             }
         }

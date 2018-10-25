@@ -62,30 +62,52 @@ namespace project1
             }
             else
             {
-                Console.WriteLine("无此数据！");
+                Console.WriteLine("无此数据！修改失败！" +
+                    "");
+                return;
             }
         }   //修改订单
 
-        public void ReviseDetails(string after, string type, string item, Order order)
+        public void ReviseItem(string after, string item, Order order)
         {
             var query = order.Items.Where(m => m.Item == item);
-            try
+            if (query.Count() == 0)
             {
-                foreach (OrderDetails m in query)
+                Console.WriteLine("无此数据！修改失败！");
+                return;
+            }
+            foreach (OrderDetails m in query)
                 {
-                    if (type == "a")
-                        m.Item = after;
-                    else if (type == "b")
-                        m.Num = Convert.ToInt32(after);
-                    else if (type == "c")
-                        m.Price = Convert.ToDouble(after);
+                    m.Item = after;
                     break;
                 }
-            }
-            catch
+        }
+        public void ReviseNumber(int after, string item, Order order)
+        {
+            var query = order.Items.Where(m => m.Item == item);
+            if (query.Count() == 0)
             {
-                Console.WriteLine("请输入有效的数据类型！");
+                Console.WriteLine("无此数据！修改失败！");
                 return;
+            }
+            foreach (OrderDetails m in query)
+            {
+                m.Num = after;
+                break;
+            }
+        }
+        public void RevisePrice(double after, string item, Order order)
+        {
+            var query = order.Items.Where(m => m.Item == item);
+            if (query.Count() == 0)
+            {
+                Console.WriteLine("无此数据！修改失败！");
+                return;
+            }
+            foreach (OrderDetails m in  query)
+            {
+                m.Price = after;
+                break;
             }
         }
         public void ShowOrderDetails(Order temp)
