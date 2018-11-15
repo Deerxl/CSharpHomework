@@ -23,6 +23,7 @@ namespace project1
         {
             ID = id;
             Name = name;
+           // Items = new List<OrderDetails>();
         }
 
         public override string ToString()

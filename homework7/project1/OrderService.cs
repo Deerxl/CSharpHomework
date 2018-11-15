@@ -98,9 +98,14 @@ namespace project1
             }
         }
  
-        public List<Order> SearchOrder(string temp)
+        public List<Order> SearchOrderbyID(string temp)
         {
-            var query = orders.Where(m => m.ID == temp || m.Name == temp);
+            var query = orders.Where(m => m.ID == temp);
+            return query.ToList();
+        }
+        public List<Order> SearchOrderbyName(string temp)
+        {
+            var query = orders.Where(m => m.Name == temp);
             return query.ToList();
         }
         public List<Order> SearchPrice(double temp1, double temp2)
@@ -118,7 +123,17 @@ namespace project1
             var query = orders.Where(m => m.TotalPrice >= temp);
             return query.ToList();
         }
-
+        public List<Order> SearchOrderbyItem(string temp)
+        {
+            var query = orders.Where(m => m.Items.Where
+            (n => n.Item == temp).Count() > 0);
+            return query.ToList();
+        }
+        public List<Order> SearchAllOrders()
+        {
+            var query = orders.AsEnumerable();
+            return query.ToList();
+        }
         //public void ShowOrderDetails(Order temp)
         //{
         //    Console.WriteLine("订单号：" + temp.ID + "\t姓名：" + temp.Name);
@@ -143,14 +158,12 @@ namespace project1
             ser.Serialize(fs, obj);
             fs.Close();
         }
-
         public void Export(string fileName)
         {
             XmlSerializer xmlser = new XmlSerializer(typeof(List<Order>));
             XmlSerialize(xmlser, fileName, orders);
             string xml = File.ReadAllText(fileName);
         }
-
         public void Import(string fileName)
         {
             XmlSerializer xmlser = new XmlSerializer(typeof(List<Order>));

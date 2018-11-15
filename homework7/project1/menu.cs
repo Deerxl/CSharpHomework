@@ -112,9 +112,9 @@ namespace project1
                             myChoice = Console.ReadLine();
                             if ("A" == myChoice)
                             {
-                                Console.WriteLine("请输入你想查询的订单号或姓名:");
+                                Console.WriteLine("请输入你想查询的订单号:");
                                 string temp3a = Console.ReadLine();
-                                SearchOrder(temp3a);
+                                SearchOrderbyID(temp3a);
                             }
                             else if ("B" == myChoice)
                             {
