@@ -129,11 +129,7 @@ namespace project1
             (n => n.Item == temp).Count() > 0);
             return query.ToList();
         }
-        public List<Order> SearchAllOrders()
-        {
-            var query = orders.AsEnumerable();
-            return query.ToList();
-        }
+        
         //public void ShowOrderDetails(Order temp)
         //{
         //    Console.WriteLine("订单号：" + temp.ID + "\t姓名：" + temp.Name);
@@ -164,12 +160,14 @@ namespace project1
             XmlSerialize(xmlser, fileName, orders);
             string xml = File.ReadAllText(fileName);
         }
-        public void Import(string fileName)
+        public List<Order> Import(string fileName)
         {
             XmlSerializer xmlser = new XmlSerializer(typeof(List<Order>));
             FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
             orders = xmlser.Deserialize(fileStream)
                 as List<Order>;
+            fileStream.Close();
+            return orders;
         }
         //public void Import1()
         //{

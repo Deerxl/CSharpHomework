@@ -15,12 +15,9 @@ namespace project2
     {
         OrderService orderService = new OrderService();
         public static List<Order> orders = new List<Order>();
-        //BindingSource bindingSource = new BindingSource();
         public Form1()
         {
             InitializeComponent();
-            orderBindingSource.DataSource = orders;
-
             //Order order1 = orderService.AddNewOrder("320", "xl");
             //OrderDetails details1 = new OrderDetails("dogfood", 2, 99.9);
             //OrderDetails details2 = new OrderDetails("dogfood", 1, 999.9);
@@ -50,8 +47,8 @@ namespace project2
                         orderService.SearchOrderbyItem(textBox1.Text);
                     break;
                 case 5:
-                    orderBindingSource.DataSource =
-                        orderService.SearchAllOrders();
+                    orderBindingSource.DataSource = orders;
+                      // orderService.SearchAllOrders();
                     break;                  
             }
         }  //search
@@ -61,21 +58,34 @@ namespace project2
             addform.ShowDialog();
             Order newOrder = addform.getOrder();
             if(newOrder != null)
-            orders.Add(newOrder);
+            {
+                var query = orders.Where(m => m.ID == newOrder.ID);
+                if(query.Count() == 0)
+                {
+                    orders.Add(newOrder);
+                    orderBindingSource.DataSource = orders;
+                }
+                else
+                {
+                    MessageBox.Show("失败！订单号已存在！");
+                }
+            }
         }  //add
 
         private void button3_Click(object sender, EventArgs e)
         {
             Order del = (Order)orderBindingSource.Current;
             if(del != null)
-            orders.Remove(del);
+            {
+                orders.Remove(del);
+                orderBindingSource.DataSource = orders;
+            }
         }  //delete
 
         private void button4_Click(object sender, EventArgs e)
         {
             FormEdit reviseform = new FormEdit((Order)orderBindingSource.Current);
             reviseform.ShowDialog();
-
         }    // revise
 
         private void button5_Click(object sender, EventArgs e)
@@ -84,10 +94,10 @@ namespace project2
             if (butResult.Equals(DialogResult.OK))
             {
                 string filename = openFileDialog1.FileName;
-                orderService.Import(filename);
-                //orderBindingSource.DataSource = orders;
+                orders.AddRange(orderService.Import(filename));
+                orderBindingSource.DataSource = orders;
             }
-        }      //import  
+        }      //import
 
         private void button6_Click(object sender, EventArgs e)
         {
@@ -95,5 +105,13 @@ namespace project2
             string filename = saveFileDialog1.FileName;
             orderService.Export(filename);
         } //export
+        
+        private void button7_Click(object sender, EventArgs e)
+        {
+            string filename = openFileDialog1.FileName;
+            orderService.Export(filename);
+            orders = orderService.Import(filename);
+            orderBindingSource.DataSource = orders;
+        } //refresh
     }
 }
