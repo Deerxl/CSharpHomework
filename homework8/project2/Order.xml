@@ -21,6 +21,7 @@
     <ID>20181016001</ID>
     <Name>xiaolu</Name>
     <phoneNum>17362447819</phoneNum>
+    <TotalPrice>81399</TotalPrice>
   </Order>
   <Order>
     <Items>
@@ -31,7 +32,8 @@
       </OrderDetails>
     </Items>
     <ID>20181117001</ID>
-    <Name>junyi</Name>
-    <phoneNum>13657872848</phoneNum>
+    <Name>deer</Name>
+    <phoneNum>13627872848</phoneNum>
+    <TotalPrice>99999</TotalPrice>
   </Order>
 </ArrayOfOrder>
